@@ -1,0 +1,11 @@
+# Environment
+.env
+
+# Google Credentials
+credentials.json
+
+# Node
+node_modules
+
+# OS
+.DS_Store
