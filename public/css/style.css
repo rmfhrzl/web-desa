@@ -1,0 +1,23 @@
+body {
+    background-color: #f8f9fa; /* Abu-abu sangat muda, bersih */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: rgba(255,255,255,0.9);
+    padding-right: 1rem;
+    padding-left: 1rem;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover {
+    color: #fff;
+    background-color: #dc3545; /* Merah saat di hover */
+}
+
+/* Card Hover Effect */
+.card {
+    transition: transform 0.2s;
+}
+.card:hover {
+    transform: translateY(-2px);
+}

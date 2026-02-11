@@ -1,0 +1,125 @@
+<%- include('layouts/header') %>
+<%- include('layouts/navbar') %>
+
+<div class="bg-light border-bottom py-5 mb-5 text-center">
+    <div class="container">
+        <h1 class="fw-bold text-uppercase display-5"><%= kategori %> Desa</h1>
+        <p class="text-muted lead">Jelajahi potensi <%= kategori %> unggulan di Desa <%= config.nama_desa %></p>
+    </div>
+</div>
+
+<div class="container mb-5">
+    <div class="row g-4">
+        
+        <% if (items.length === 0) { %>
+            <div class="col-12 text-center py-5">
+                <h3 class="text-muted">Data belum tersedia.</h3>
+            </div>
+        <% } %>
+
+        <% items.forEach((item, index) => { %>
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 border-0 shadow-sm hover-up">
+                <div style="height: 250px; overflow: hidden;" class="position-relative">
+                    <img src="<%= item.gambar %>" class="w-100 h-100 object-fit-cover cursor-pointer" 
+                         alt="<%= item.nama %>"
+                         onclick="bukaModal('<%= index %>')"
+                         onerror="this.onerror=null;this.src='https://via.placeholder.com/400x300?text=Foto+<%= kategori %>';">
+                </div>
+
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title fw-bold mb-2"><%= item.nama %></h5>
+                    
+                    <p class="card-text text-muted small mb-3 flex-grow-1">
+                        <%= item.deskripsi.length > 80 ? item.deskripsi.substring(0, 80) + '...' : item.deskripsi %>
+                    </p>
+                    
+                    <button onclick="bukaModal('<%= index %>')" class="btn btn-outline-danger w-100 rounded-pill fw-bold">
+                        Lihat Detail <i class="fas fa-arrow-right ms-1"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <% }) %>
+
+    </div>
+</div>
+
+<div class="modal fade" id="detailModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+            <div class="row g-0">
+                <div class="col-lg-6 bg-light d-flex align-items-center justify-content-center" style="min-height: 300px;">
+                    <img id="modalImg" src="" class="w-100 h-100 object-fit-cover" alt="Detail">
+                </div>
+                
+                <div class="col-lg-6">
+                    <div class="modal-header border-0 pb-0">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body p-4 pt-2">
+                        <span id="modalKategori" class="badge bg-danger mb-2 text-uppercase"><%= kategori %></span>
+                        <h3 id="modalNama" class="fw-bold mb-3">Nama Produk</h3>
+                        
+                        <div class="p-3 bg-light rounded mb-3 border-start border-4 border-danger">
+                            <h5 id="modalInfo" class="fw-bold text-danger m-0">Rp 0,-</h5>
+                        </div>
+
+                        <p id="modalDeskripsi" class="text-muted lh-lg mb-4">Deskripsi lengkap...</p>
+
+                        <div class="d-grid gap-2">
+                            <a id="modalWA" href="#" target="_blank" class="btn btn-success rounded-pill fw-bold py-2">
+                                <i class="fab fa-whatsapp me-2"></i> Hubungi / Pesan Sekarang
+                            </a>
+                            <button type="button" class="btn btn-light rounded-pill text-muted" data-bs-dismiss="modal">Tutup</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Kita simpan data dari Server ke variabel Javascript di browser
+    // JSON.stringify membuat data object bisa dibaca Javascript
+    const dataItems = <%- JSON.stringify(items) %>;
+
+    function bukaModal(index) {
+        const item = dataItems[index];
+        if (!item) return;
+
+        // Isi data ke dalam Modal
+        document.getElementById('modalImg').src = item.gambar;
+        document.getElementById('modalNama').innerText = item.nama;
+        document.getElementById('modalDeskripsi').innerText = item.deskripsi;
+        document.getElementById('modalInfo').innerText = item.info || 'Info Detail Hubungi Kontak';
+
+        // Atur Link WhatsApp
+        const waLink = `https://wa.me/${item.kontak}?text=Halo, saya lihat *${item.nama}* di Website Desa, mau tanya info lebih lanjut.`;
+        
+        const btnWa = document.getElementById('modalWA');
+        if (item.kontak && item.kontak.length > 5) {
+            btnWa.href = waLink;
+            btnWa.style.display = 'block'; // Munculkan tombol
+            btnWa.innerHTML = '<i class="fab fa-whatsapp me-2"></i> Hubungi / Pesan Sekarang';
+        } else {
+            // Kalau tidak ada nomor HP, tombolnya jadi 'Info Only'
+            btnWa.removeAttribute('href');
+            btnWa.style.display = 'none'; // Sembunyikan kalau gak ada nomor
+        }
+
+        // Tampilkan Modal pakai Bootstrap
+        const myModal = new bootstrap.Modal(document.getElementById('detailModal'));
+        myModal.show();
+    }
+</script>
+
+<style>
+    .hover-up { transition: transform 0.2s; }
+    .hover-up:hover { transform: translateY(-5px); }
+    .cursor-pointer { cursor: pointer; }
+    .object-fit-cover { object-fit: cover; }
+</style>
+
+<%- include('layouts/footer') %>

@@ -1,0 +1,112 @@
+<%- include('layouts/header') %>
+<%- include('layouts/navbar') %>
+
+<header class="bg-white py-4 border-bottom shadow-sm">
+    <div class="container d-flex align-items-center justify-content-between">
+        
+        <div class="d-flex align-items-center">
+            <img src="<%= config.logo_desa %>" width="60" class="me-3">
+            <div>
+                <h4 class="m-0 fw-bold">Desa <%= config.nama_desa %></h4>
+                <small class="text-secondary">Kecamatan Tuntang, Kabupaten Semarang</small>
+            </div>
+        </div>
+
+        <% if (config.logo_kabupaten) { %>
+            <img src="<%= config.logo_kabupaten %>" width="60" class="me-3">
+        <% } %>
+
+    </div>
+</header>
+
+<div class="container my-4">
+    <div class="alert alert-light border-start border-5 border-danger shadow-sm d-flex align-items-center py-2 mb-4" role="alert">
+        <span class="badge bg-danger me-3">INFO TERKINI</span>
+        <marquee class="mb-0 text-dark">Selamat datang di Sistem Informasi Digital Desa <%= config.nama_desa %>. Mari wujudkan desa digital yang mandiri!</marquee>
+    </div>
+
+    <div class="row g-4"> <div class="col-lg-8">
+            
+            <% if (headline) { %>
+            <div class="card border-0 shadow overflow-hidden mb-4 rounded-3">
+                <div class="position-relative" style="height: 400px; background-color: #333;">
+                    <img src="<%= headline.gambar %>" 
+                         class="w-100 h-100" 
+                         style="object-fit: cover; opacity: 0.8;" 
+                         alt="Berita Utama"
+                         onerror="this.onerror=null;this.src='https://via.placeholder.com/800x400?text=Foto+Tidak+Muncul';">
+                    
+                    <div class="position-absolute bottom-0 start-0 w-100 p-4" 
+                         style="background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);">
+                        <span class="badge bg-warning text-dark mb-2"><%= headline.kategori %></span>
+                        <h2 class="text-white fw-bold mb-2"><%= headline.judul %></h2>
+                        <p class="text-white-50 d-none d-md-block"><%= headline.ringkasan %></p>
+                        <a href="/berita/<%= headline.index %>" class="btn btn-danger btn-sm rounded-pill px-3">Baca Selengkapnya <i class="fas fa-arrow-right ms-1"></i></a>
+                    </div>
+                </div>
+            </div>
+            <% } %>
+
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h5 class="fw-bold m-0 border-start border-4 border-danger ps-3">BERITA DESA</h5>
+                <a href="#" class="btn btn-outline-secondary btn-sm rounded-pill">Lihat Semua</a>
+            </div>
+
+            <div class="row">
+                <% berita.forEach(item => { %>
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100 border-0 shadow-sm hover-shadow transition-card">
+                        <div style="height: 200px; background-color: #eee; overflow: hidden;">
+                            <img src="<%= item.gambar %>" 
+                                 class="card-img-top w-100 h-100" 
+                                 style="object-fit: cover;" 
+                                 alt="..."
+                                 onerror="this.onerror=null;this.src='https://via.placeholder.com/400x200?text=No+Image';">
+                        </div>
+                        <div class="card-body">
+                            <small class="text-danger fw-bold" style="font-size: 0.75rem"><%= item.kategori %></small>
+                            <h6 class="card-title fw-bold mt-1 mb-2">
+                                <a href="/berita/<%= item.index %>" class="text-dark text-decoration-none stretched-link"><%= item.judul %></a>
+                            </h6>
+                            <small class="text-muted"><i class="far fa-clock me-1"></i> <%= item.tanggal %></small>
+                        </div>
+                    </div>
+                </div>
+                <% }) %>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            
+            <div class="card shadow border-0 mb-4 text-center rounded-3 overflow-hidden">
+                <div class="card-header bg-danger text-white fw-bold py-3">
+                    KEPALA DESA
+                </div>
+                <div class="card-body bg-white">
+                    <div class="mx-auto mb-3 p-1 border rounded-circle" style="width: 120px; height: 120px;">
+                        <img src="<%= config.foto_kades %>" 
+                             class="rounded-circle w-100 h-100" 
+                             style="object-fit: cover;" 
+                             alt="Kades"
+                             onerror="this.onerror=null;this.src='https://via.placeholder.com/150?text=Foto+Kades';">
+                    </div>
+                    <h5 class="fw-bold text-dark mb-0"><%= config.nama_kades %></h5>
+                    <small class="text-muted">Periode 2020 - 2026</small>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<%- include('layouts/footer') %>
+
+<style>
+    .hover-shadow:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+    }
+    .transition-card {
+        transition: all 0.3s ease;
+    }
+</style>

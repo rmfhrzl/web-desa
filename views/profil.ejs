@@ -1,0 +1,77 @@
+<%- include('layouts/header') %>
+<%- include('layouts/navbar') %>
+
+<div class="bg-light border-bottom py-4 mb-4">
+  <div class="container">
+    <h2 class="fw-bold text-uppercase border-start border-5 border-danger ps-3 mb-0">
+      PROFIL DESA
+    </h2>
+  </div>
+</div>
+
+<div class="container mb-5">
+  <div class="row">
+    <div class="col-lg-8">
+
+      <!-- TAB -->
+      <div class="d-flex flex-wrap gap-2 mb-4 border-bottom pb-4">
+        <a href="/profil/sejarah" class="btn btn-tab <%= currentSlug === 'sejarah' ? 'active' : '' %>">SEJARAH</a>
+        <a href="/profil/visi-misi" class="btn btn-tab <%= currentSlug === 'visi-misi' ? 'active' : '' %>">VISI MISI</a>
+        <a href="/profil/struktur" class="btn btn-tab <%= currentSlug === 'struktur' ? 'active' : '' %>">STRUKTUR</a>
+        <a href="/profil/geografis" class="btn btn-tab <%= currentSlug === 'geografis' ? 'active' : '' %>">GEOGRAFIS</a>
+        <a href="/profil/peta" class="btn btn-tab <%= currentSlug === 'peta' ? 'active' : '' %>">PETA</a>
+      </div>
+
+      <h4 class="fw-bold text-uppercase mb-3"><%= data.judul %></h4>
+
+      <!-- KHUSUS PETA -->
+      <% if (currentSlug === 'peta' && data.embed_peta) { %>
+        <div class="ratio ratio-16x9 mb-3">
+          <%- data.embed_peta %>
+        </div>
+      <% } %>
+
+      <!-- KONTEN TEKS -->
+      <article class="lh-lg text-dark" style="text-align: justify;">
+        <% (data.isi || '').split('\n').forEach(p => { %>
+          <% if (p && p.trim()) { %>
+            <p class="mb-3"><%= p %></p>
+          <% } %>
+        <% }) %>
+
+        <% if (!data.isi) { %>
+          <p class="text-muted fst-italic">(Konten belum tersedia di Spreadsheet)</p>
+        <% } %>
+      </article>
+
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="col-lg-4">
+      <div class="card shadow-sm border-0 mb-3">
+        <div class="card-header bg-danger text-white fw-bold">KEPALA DESA</div>
+        <div class="card-body text-center">
+          <img src="<%= config.foto_kades %>" class="img-fluid rounded mb-2" style="max-height:200px;">
+          <h5 class="fw-bold"><%= config.nama_kades %></h5>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<style>
+.btn-tab {
+  background:#f8f9fa;
+  border:1px solid #dee2e6;
+  color:#666;
+  font-weight:bold;
+  border-radius:0;
+}
+.btn-tab.active, .btn-tab:hover {
+  background:#212529;
+  color:#fff;
+}
+</style>
+
+<%- include('layouts/footer') %>
