@@ -1,0 +1,44 @@
+<%- include('layouts/header') %>
+<%- include('layouts/navbar') %>
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/" class="text-decoration-none text-danger">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Berita Desa</li>
+                </ol>
+            </nav>
+
+            <h1 class="fw-bold mb-3"><%= berita.judul %></h1>
+            <div class="d-flex align-items-center text-muted mb-4">
+                <span class="badge bg-danger me-2"><%= berita.kategori %></span>
+                <small><i class="far fa-calendar me-1"></i> <%= berita.tanggal %></small>
+            </div>
+
+            <div class="mb-4 rounded-3 overflow-hidden shadow-sm">
+                <img src="<%= berita.gambar %>" class="w-100" alt="<%= berita.judul %>" 
+                     onerror="this.onerror=null;this.src='https://via.placeholder.com/800x400?text=Gambar+Rusak';">
+            </div>
+
+            <article class="lh-lg fs-5 text-dark">
+                <% berita.isi.split('\n').forEach(paragraf => { %>
+                    <% if (paragraf.trim()) { %>
+                        <p class="mb-3"><%= paragraf %></p>
+                    <% } %>
+                <% }) %>
+            </article>
+
+            <hr class="my-5">
+
+            <div class="d-grid gap-2">
+                <a href="/" class="btn btn-outline-dark rounded-pill"><i class="fas fa-arrow-left me-2"></i> Kembali ke Beranda</a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<%- include('layouts/footer') %>
